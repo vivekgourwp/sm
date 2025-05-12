@@ -33,6 +33,10 @@ class User extends Authenticatable
         'remember_token',
     ];
 
+    public function contact(){
+        return $this->hasOne(Contact::class);
+    }
+
     /**
      * The attributes that should be cast.
      *
