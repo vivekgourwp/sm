@@ -1,20 +1,19 @@
 <?php
 
 namespace App\Http\Controllers;
-use App\Models\Student;
-use Illuminate\Http\Request;    
 
-class StudentController extends Controller
+use Illuminate\Http\Request;
+
+class DummyController extends Controller
 {
-        /**
+    /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
     public function index()
     {
-           $students = Student::all();
-           return view('students.index', compact('students'));
+        //
     }
 
     /**
@@ -24,7 +23,7 @@ class StudentController extends Controller
      */
     public function create()
     {
-         return view('students.create');
+        //
     }
 
     /**
@@ -34,19 +33,9 @@ class StudentController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
-{
-    // Validate the incoming request data
-    $validated = $request->validate([
-        'name' => 'required|string|max:255',
-        'email' => 'required|email|unique:students,email',
-    ]);
-
-    // Create a new student record in the database
-    Student::create($validated);
-
-    // Redirect back to the students index with a success message
-    return redirect()->route('students.index')->with('success', 'Student added successfully!');
-}
+    {
+        //
+    }
 
     /**
      * Display the specified resource.

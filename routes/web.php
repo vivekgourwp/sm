@@ -1,7 +1,10 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-
+use App\Http\Controllers\StudentController;
+use App\Http\Controllers\CourseController;
+use App\Http\Controllers\TeacherController;
+use App\Http\Controllers\EnrollmentController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -20,5 +23,12 @@ Route::get('/', function () {
 Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth'])->name('dashboard');
+
+
+Route::resource('students', StudentController::class);
+Route::resource('courses', CourseController::class);
+Route::resource('teachers', TeacherController::class);
+Route::resource('enrollments', EnrollmentController::class);
+
 
 require __DIR__.'/auth.php';
