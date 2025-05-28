@@ -2,30 +2,30 @@
 
 namespace App\Http\Controllers;
 use App\Models\Student;
-use Illuminate\Http\Request;    
+use Illuminate\Http\Request;
 
 class StudentController extends Controller
 {
-        /**
+    /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
     public function index()
     {
-           $students = Student::all();
-           return view('students.index', compact('students'));
+        $students = Student::all();
+        return view('students.index', compact('students'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-         return view('students.create');
-    }
+    // /**
+    //  * Show the form for creating a new resource.
+    //  *
+    //  * @return \Illuminate\Http\Response
+    //  */
+    // public function create()
+    // {
+    //     return view('students.create');
+    // }
 
     /**
      * Store a newly created resource in storage.
@@ -34,41 +34,40 @@ class StudentController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
-{
-    // Validate the incoming request data
-    $validated = $request->validate([
-        'name' => 'required|string|max:255',
-        'email' => 'required|email|unique:students,email',
-    ]);
-
-    // Create a new student record in the database
-    Student::create($validated);
-
-    // Redirect back to the students index with a success message
-    return redirect()->route('students.index')->with('success', 'Student added successfully!');
-}
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
     {
-        //
+        $validated = $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|email|unique:students,email',
+        ]);
+
+        Student::create($validated);
+
+        return redirect()->route('students.index')->with('success', 'Student added successfully!');
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
+    // /**
+    //  * Display the specified resource.
+    //  *
+    //  * @param  int  $id
+    //  * @return \Illuminate\Http\Response
+    //  */
+    // public function show($id)
+    // {
+    //     $student = Student::findOrFail($id);
+    //     return view('students.show', compact('student'));
+    // }
+
+    // /**
+    //  * Show the form for editing the specified resource.
+    //  *
+    //  * @param  int  $id
+    //  * @return \Illuminate\Http\Response
+    //  */
+    // public function edit($id)
+    // {
+    //     $student = Student::findOrFail($id);
+    //     return view('students.edit', compact('student'));
+    // }
 
     /**
      * Update the specified resource in storage.
@@ -79,7 +78,16 @@ class StudentController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $student = Student::findOrFail($id);
+
+        $validated = $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|email|unique:students,email,' . $student->id,
+        ]);
+
+        $student->update($validated);
+
+        return redirect()->route('students.index')->with('success', 'Student updated successfully!');
     }
 
     /**
@@ -90,6 +98,9 @@ class StudentController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $student = Student::findOrFail($id);
+        $student->delete();
+
+        return redirect()->route('students.index')->with('success', 'Student deleted successfully!');
     }
 }

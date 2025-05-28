@@ -28,7 +28,10 @@ Route::get('/dashboard', function () {
 Route::resource('students', StudentController::class);
 Route::resource('courses', CourseController::class);
 Route::resource('teachers', TeacherController::class);
-Route::resource('enrollments', EnrollmentController::class);
+// Route::resource('enrollments', EnrollmentController::class);
 
+
+
+Route::resource('enrollments', EnrollmentController::class)->only(['index', 'create', 'store']);
 
 require __DIR__.'/auth.php';

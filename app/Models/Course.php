@@ -9,6 +9,8 @@ class Course extends Model
 {
     use HasFactory;
 
+     protected $fillable = ['name', 'teacher_id'];
+
     public function students()
     {
         return $this->belongsToMany(Student::class, 'enrollments');
@@ -17,6 +19,11 @@ class Course extends Model
     public function teacher()
     {
         return $this->belongsTo(Teacher::class);
+    }
+
+    public function enrollments()
+    {
+        return $this->hasMany(Enrollment::class);
     }
 }
 
