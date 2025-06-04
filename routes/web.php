@@ -32,6 +32,17 @@ Route::resource('teachers', TeacherController::class);
 
 
 
+
+
+Route::get('/admin', function () {
+    return view('dashboard');
+});
+
+
+
+
+
+
 Route::resource('enrollments', EnrollmentController::class)->only(['index', 'create', 'store']);
 
 require __DIR__.'/auth.php';

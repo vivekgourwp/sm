@@ -9,7 +9,9 @@ class Student extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['name', 'email'];
+    protected $fillable = [
+        'first_name', 'middle_name', 'last_name', 'gender', 'date_of_birth', 'contact_id',
+    ];
 
 
     public function enrollments()
@@ -21,5 +23,11 @@ class Student extends Model
     {
         return $this->belongsToMany(Course::class, 'enrollments');
     }
+
+    public function contact()
+    {
+        return $this->belongsTo(Contact::class);
+    }
+
 
 }
