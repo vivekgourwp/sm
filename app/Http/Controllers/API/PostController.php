@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
-use App\Http\Controllers\Basecontroller as BaseController;
+use App\Http\Controllers\API\Basecontroller as BaseController;
 use Illuminate\Http\Request;
 use App\Models\Post;
 use Illuminate\Support\Facades\Validator;
@@ -18,7 +18,10 @@ class PostController extends BaseController
      */
     public function index()
     {
-        $posts = Post::get();
+        $posts = Post::all();
+        if ($posts->isEmpty()) { // Check if the collection is empty
+            return $this->sendError('No posts found', [], 404);
+        }
         return $this->sendResponse($posts, 'Post data successfully retrieved');
     }
 
@@ -27,7 +30,7 @@ class PostController extends BaseController
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\Response~~
      */
     public function store(Request $request)
     {
@@ -40,7 +43,7 @@ class PostController extends BaseController
             ]
         );
         if($validatePost->fails()){
-            return $this->sendError('Validation failed', $validatePost->errors()->all());
+            return $this->sendError('Validation failed.', $validatePost->errors()->all());
         }
 
         $img = $request->image;
@@ -69,7 +72,11 @@ class PostController extends BaseController
      */
     public function show($id)
     {
-        //
+        $post = POST::find($id);
+        if (!$post) {
+            return $this->sendError('Post not found', [], 404);
+        }
+        return $this->sendResponse($post, 'Single Post data successfully retrieved');
     }
 
     /**
@@ -79,48 +86,6 @@ class PostController extends BaseController
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    // public function update(Request $request, $id)
-    // {
-    //     $validatePost = Validator::make(
-    //         $request->all(), // ✅ this is the data to validate
-    //         [
-    //             'title' => 'required',
-    //             'description' => 'required|string',
-    //             'image' => 'required|image|mimes:jpg,png,jpeg|max:2048',
-    //         ]
-    //     );
-    //     if($validatePost->fails()){
-    //         return response()->json([
-    //             'status' => 'false',
-    //             'message' => 'Update Validation faild',
-    //             'errors' => $validatePost->errors()->all()
-    //         ]);
-    //     }
-
-    //     $img = $request->image;
-    //     $ext = $img->getClientOriginalExtension();
-    //     $imgName = time(). '.' . $ext;
-    //     $img->move(public_path().'/uploads',$imgName);
-
-    //     $post = Post::find($id);
-    //     if(!post){
-    //         return response()->json([
-    //             'status' => false,
-    //             'message' => 'Post  not found',
-    //             'data' => $post
-    //         ], 404);
-    //     }
-    //     $post= Post::create([
-    //         'title'             => $request->title,
-    //         'description'       => $request->description,
-    //         'image'             => $imgName,
-    //     ]);
-    //     return response()->json([
-    //         'status' => true,
-    //         'message' => 'Post successfully update',
-    //         'data' => $post
-    //     ], 200);
-    // }
 
     public function update(Request $request, $id)
     {
@@ -191,7 +156,7 @@ class PostController extends BaseController
         $post = Post::where('id', $id)->delete();
         return response()->json([
             'status' => true,
-            'message' => 'yuor post are deleted succsefully'
-        ]); 
+            'message' => 'your post are deleted succsefully'
+        ]);
     }
 }
